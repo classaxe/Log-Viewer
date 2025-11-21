@@ -277,13 +277,16 @@ h1 a {
 #showAll input {
     margin-left: 0.25em;
 }
-.quicklinks {
+.quicklinks,
+a.link {
     font-weight: bold;
 }
-.quicklinks a {
+.quicklinks a,
+a.link {
     color: #00f;
 }
-.quicklinks a:hover {
+.quicklinks a:hover,
+a.link:hover {
     text-decoration: underline;
 }
 

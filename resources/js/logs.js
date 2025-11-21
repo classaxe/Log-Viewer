@@ -422,10 +422,9 @@ var frm = {
         $('#usCountiesState').html(html);
         $('#usCountiesTotal').html(
             'There are <b>' + counties + '</b> confirmed ' + (counties === 1 ? 'county' : 'counties') +
-            ' from a total of <b>' + countiesTotal + '</b> available in <b>' + states + '</b> US ' + (states === 1 ? 'state' : 'states') +
-            ' - assuming that there are no problems with qualifying logs at QRZ.com.<br>' +
-            'Note that for the QRZ "US-50" states award, neither PR nor VI logs count towards the 50, and ' +
-            'any log seen for DC counts as a log in MD.'
+            ' from <b>' + countiesTotal + '</b> available in <b>' + states + '</b> US ' + (states === 1 ? 'state' : 'states') +
+            ' - assuming no issues with qualifying logs at <a href="https://qrz.com" class="link" target="_blank">QRZ.com</a><br>' +
+            'For the QRZ <b>"US-50"</b> states award, <b>PR</b> and <b>VI</b> logs are ignored and logs for <b>DC</b> count towards <b>MD</b>.'
         );
         $('#usCountiesStatePrint').click(function() {
             PrintElements.print([document.getElementById('rptUsCounties')]);
