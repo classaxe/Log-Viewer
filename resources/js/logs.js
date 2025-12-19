@@ -320,10 +320,18 @@ var frm = {
             }
         })
         let html = '', column = 0, row = 0, i, counties = 0, countiesTotal = 0;
+        let counties100 = 0, counties50 = 0, counties0 = 0;
         let dc = false, usState = false, states = 0, unconfirmed = 0;
         let wrongSpLogs = '', wrongSpCount = 0;
         for (i = 0; i < stats.usCounties.length; i++) {
             countiesTotal += stats.usCounties[i].total;
+            if (stats.usCounties[i]['percent'] === 100) {
+                counties100++;
+            } else if (stats.usCounties[i]['percent'] >= 50) {
+                counties50++;
+            } else {
+                counties0++;
+            }
         }
 
         for (row = 0; row + column < stats.usCounties.length + 10; row += 10) {
@@ -421,10 +429,11 @@ var frm = {
         }
         $('#usCountiesState').html(html);
         $('#usCountiesTotal').html(
+            '<table cellpadding="0" cellspacing="2" border="1" style="float: left; margin-right: 0.5em"><tr><th>100%</th><th>50-99%</th><th>0-49%</th></tr>' +
+            '<tr><td class="pc100">' + counties100 + '</td><td class="pc50">' + counties50 + '</td><td class="pc0">' + counties0 + '</td></tr></table>' +
             'There are <b>' + counties + '</b> confirmed ' + (counties === 1 ? 'county' : 'counties') +
-            ' from <b>' + countiesTotal + '</b> available in <b>' + states + '</b> US ' + (states === 1 ? 'state' : 'states') +
-            ' - assuming no issues with qualifying logs at <a href="https://qrz.com" class="link" target="_blank">QRZ.com</a><br>' +
-            'For the QRZ <b>"US-50"</b> states award, <b>PR</b> and <b>VI</b> logs are ignored and logs for <b>DC</b> count towards <b>MD</b>.'
+            ' from <b>' + countiesTotal + '</b> available in <b>' + states + '</b> US ' + (states === 1 ? 'state' : 'states') + '<br>' +
+            'For QRZ <b>"US-50"</b> states award, <b>PR</b> and <b>VI</b> logs are ignored and logs for <b>DC</b> count for <b>MD</b>.<br style="clear: both">'
         );
         $('#usCountiesStatePrint').click(function() {
             PrintElements.print([document.getElementById('rptUsCounties')]);
