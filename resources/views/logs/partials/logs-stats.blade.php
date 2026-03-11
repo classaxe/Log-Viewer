@@ -9,8 +9,8 @@
             <a href="#stats">Top</a> |
             <a href="#" id="usCountiesStatePrint">Print</a>
         ]</span></h2>
-        <p id="usCountiesTotal"></p>
-        <div id="usCountiesState"></div>
+        <div id="usCountiesTotal"></div>
+        <div id="usCountiesState"><div class="statsloader"></div></div>
     </div>
 
     <div id="rptCountries">
@@ -19,7 +19,7 @@
         <a href="#" id="countriesPrint">Print</a>
     ]</span></h2>
     <p id="countriesTotal"></p>
-    <div id="countries"></div>
+    <div id="countries"><div class="statsloader"></div></div>
     </div>
 
 </div>

@@ -319,19 +319,35 @@ var frm = {
                 stats.usCounties = result.data;
             }
         })
-        let html = '', column = 0, row = 0, i, counties = 0, countiesTotal = 0;
-        let counties100 = 0, counties50 = 0, counties0 = 0;
+        let a, html = '', column = 0, row = 0, i, counties = 0, countiesTotal = 0;
+        let countyStats = {
+            s100: 0,
+            s90: 0,
+            s80: 0,
+            s70: 0,
+            s60: 0,
+            s50: 0,
+            s40: 0,
+            s30: 0,
+            s20: 0,
+            s10: 0,
+            s0: 0
+        }
         let dc = false, usState = false, states = 0, unconfirmed = 0;
         let wrongSpLogs = '', wrongSpCount = 0;
         for (i = 0; i < stats.usCounties.length; i++) {
-            countiesTotal += stats.usCounties[i].total;
             if (stats.usCounties[i]['percent'] === 100) {
-                counties100++;
-            } else if (stats.usCounties[i]['percent'] >= 50) {
-                counties50++;
+                countyStats['s100']++;
             } else {
-                counties0++;
+                for (a=0; a < 100; a+=10) {
+                    if (a+9 >= stats.usCounties[i]['percent']) {
+                        countyStats['s' + a]++;
+                        break;
+                    }
+                }
+
             }
+            countiesTotal += stats.usCounties[i].total;
         }
 
         for (row = 0; row + column < stats.usCounties.length + 10; row += 10) {
@@ -428,13 +444,20 @@ var frm = {
             html += "</tr></table>";
         }
         $('#usCountiesState').html(html);
-        $('#usCountiesTotal').html(
-            '<table cellpadding="0" cellspacing="2" border="1" style="float: left; margin-right: 0.5em"><tr><th>100%</th><th>50-99%</th><th>0-49%</th></tr>' +
-            '<tr><td class="pc100">' + counties100 + '</td><td class="pc50">' + counties50 + '</td><td class="pc0">' + counties0 + '</td></tr></table>' +
+        html = '<table cellpadding="0" cellspacing="2" border="1"><tr>';
+        for (a=0; a <= 100; a+=10) {
+            html +='<th class="c">' + a + '%</th>';
+        }
+        html += '</tr><tr>';
+        for (a=0; a <= 100; a+=10) {
+            html += '<td class="' + (a===100 ? 'pc100' : (a >= 50 ? 'pc50' : 'pc0')) + '">' + (countyStats['s' + a]) + '</td>';
+        }
+        html +=
             'There are <b>' + counties + '</b> confirmed ' + (counties === 1 ? 'county' : 'counties') +
-            ' from <b>' + countiesTotal + '</b> available in <b>' + states + '</b> US ' + (states === 1 ? 'state' : 'states') + '<br>' +
-            'For QRZ <b>"US-50"</b> states award, <b>PR</b> and <b>VI</b> logs are ignored and logs for <b>DC</b> count for <b>MD</b>.<br style="clear: both">'
-        );
+            ' from <b>' + countiesTotal + '</b> available in <b>' + states + '</b> US ' + (states === 1 ? 'state' : 'states') +
+            '<span class="pe-no-print"><br>' +
+            'For QRZ <b>"US-50"</b> states award, <b>PR</b> and <b>VI</b> logs are ignored and logs for <b>DC</b> count for <b>MD</b>.</span>';
+        $('#usCountiesTotal').html(html);
         $('#usCountiesStatePrint').click(function() {
             PrintElements.print([document.getElementById('rptUsCounties')]);
             return false;
