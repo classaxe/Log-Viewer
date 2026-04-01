@@ -244,8 +244,8 @@ var frm = {
     },
 
     getStats: async () => {
-        await frm.getStatsUsCounties();
         await frm.getStatsCountries();
+        await frm.getStatsUsCounties();
     },
 
     getStatsCountries: async () => {
