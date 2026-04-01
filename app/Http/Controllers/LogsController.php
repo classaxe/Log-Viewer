@@ -43,13 +43,18 @@ class LogsController extends Controller
     {
         $callsign = str_replace('-','/', $callsign);
         $fetchLogs = $request->query('action') ?: null === 'fetch';
-        if (Auth::user() && $fetchLogs) {
-            if (!Log::getQRZDataForUser(Auth::user())) {
+        if ($fetchLogs) {
+            if (Auth::user()) {
+                if (!Log::getQRZDataForUser(Auth::user())) {
+                    return redirect()
+                        ->route('home')
+                        ->with('status', '<b>Error:</b><br>' . Auth::user()->qrz_last_result);
+                }
                 return redirect()
-                    ->route('home')
-                    ->with('status', '<b>Error:</b><br>' . Auth::user()->qrz_last_result);
+                    ->route('logs.page')
+                    ->with('status', '<b>Notice:</b><br>Please login first');
             }
-            return redirect()->route('logs.page', ['callsign' => $callsign]);
+            return redirect()->route('login');
         }
 
         $data = User::getUserDataByCallsign($callsign);
