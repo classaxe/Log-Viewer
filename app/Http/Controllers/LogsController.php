@@ -51,7 +51,7 @@ class LogsController extends Controller
                         ->with('status', '<b>Error:</b><br>' . Auth::user()->qrz_last_result);
                 }
                 return redirect()
-                    ->route('logs.page')
+                    ->route('logs.page', ['callsign' => $callsign])
                     ->with('status', '<b>Notice:</b><br>Please login first');
             }
             return redirect()->route('login');
