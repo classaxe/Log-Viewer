@@ -50,6 +50,7 @@ class Log extends Model
         'DE' => 3,
         'FL' => 67,
         'GA' => 159,
+        'GU' => 1,
         'HI' => 4,
         'IA' => 99,
         'ID' => 44,
@@ -429,7 +430,10 @@ class Log extends Model
 
     public static function getLogUsStateCountiesForUser(User $user): array
     {
-        // DB::enableQueryLog();
+        $debug = false;
+        if ($debug) {
+            DB::enableQueryLog();
+        }
         $states =
             State::Select(
                 'states.country',
@@ -443,7 +447,7 @@ class Log extends Model
                         `userId` = " . (int)$user->id . "
                         AND `county` <> ''
                         AND `l`.`itu` = `states`.`country`
-                        AND (`l`.`itu` IN('Alaska', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
+                        AND (`l`.`itu` IN('Alaska', 'Guam', 'Guam', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
                         AND SUBSTR(`l`.`county`, 1, 2) = `l`.`sp`
                     ) AS logged"
                 ),
@@ -456,7 +460,7 @@ class Log extends Model
                         `userId` = " . (int)$user->id . "
                         AND `county` <> ''
                         AND `l`.`itu` = `states`.`country`
-                        AND (`l`.`itu` IN('Alaska', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
+                        AND (`l`.`itu` IN('Alaska', 'Guam', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
                         AND SUBSTR(`l`.`county`, 1, 2) = `l`.`sp`
                         AND `conf` = 'Y'
                     ) AS confirmed
@@ -470,7 +474,7 @@ class Log extends Model
                         `userId` = " . (int)$user->id . "
                         AND `county` <> ''
                         AND `l`.`itu` = `states`.`country`
-                        AND (`l`.`itu` IN('Alaska', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
+                        AND (`l`.`itu` IN('Alaska', 'Guam', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
                         AND SUBSTR(`l`.`county`, 1, 2) != `l`.`sp`
                     ) AS wrongSpCount"
                 ),
@@ -485,22 +489,27 @@ class Log extends Model
                         `userId` = " . (int)$user->id . "
                         AND `county` <> ''
                         AND `l`.`itu` = `states`.`country`
-                        AND (`l`.`itu` IN('Alaska', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
+                        AND (`l`.`itu` IN('Alaska', 'Guam', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
                         AND SUBSTR(`l`.`county`, 1, 2) != `l`.`sp`
                     ) AS wrongSpLogs"
                 ),
             )
-            ->whereIn('country', ['USA', 'Alaska', 'Hawaii', 'Puerto Rico', 'US Virgin Islands'])
+            ->whereIn('country', ['USA', 'Alaska', 'Guam', 'Hawaii', 'Puerto Rico', 'US Virgin Islands'])
             ->orderBy('sp')
             ->get()
             ->toArray();
-        // print_r(DB::getQueryLog());
+        if ($debug) {
+            print_r(DB::getQueryLog());
+        }
         $results = [];
         foreach ($states as $state) {
             $sp = $state['sp'];
             switch ($state['country']) {
                 case 'Alaska':
                     $sp = 'AK';
+                    break;
+                case 'Guam':
+                    $sp = 'GU';
                     break;
                 case 'Hawaii':
                     $sp = 'HI';
@@ -846,6 +855,9 @@ class Log extends Model
                         break;
                     case 'Alaska':
                         $sp = 'AK';
+                        break;
+                    case 'Guam':
+                        $sp = 'GU';
                         break;
                     case 'Hawaii':
                         $sp = 'HI';

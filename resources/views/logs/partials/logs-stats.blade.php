@@ -7,6 +7,7 @@
     <div id="rptUsCounties">
         <h2>{{ date('Y-m-d') }} Confirmed US Counties by State: <span class="quicklinks">[
             <a href="#stats">Top</a> |
+            <a href="#" id="usCountiesStateReload">Reload</a> |
             <a href="#" id="usCountiesStatePrint">Print</a>
         ]</span></h2>
         <div id="usCountiesTotal"></div>
@@ -16,6 +17,7 @@
     <div id="rptCountries">
     <h2>{{ date('Y-m-d') }} Confirmed Countries: <span class="quicklinks">[
         <a href="#stats">Top</a> |
+        <a href="#" id="countriesReload">Reload</a> |
         <a href="#" id="countriesPrint">Print</a>
     ]</span></h2>
     <p id="countriesTotal"></p>

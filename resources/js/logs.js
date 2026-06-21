@@ -302,6 +302,20 @@ var frm = {
             ' from a total of <b>' + stats.countries.length + '</b> available ' +
             ' - assuming that there are no problems with qualifying logs at QRZ.com.'
         );
+        $("#countriesReload").click(function(){
+            $('#countries').html('<div class="statsloader"></div>');
+
+            $.ajax({
+                type: 'GET',
+                url: '/stats/' + callsign.replace('/', '-') + '/countries',
+                dataType: 'json',
+                data: stats,
+                success: function (result) {
+                    stats.countries = result.data;
+                }
+            })
+            return false;
+        });
         $("#countriesPrint").click(function(){
             PrintElements.print([document.getElementById('rptCountries')]);
             return false;
@@ -364,7 +378,7 @@ var frm = {
                 html += "<th" +
                     (dc ?
                             ' style="cursor:help; font-style:italic" title="According to QRZ\'s rules, a log in DC counts towards MD for the \'USA 50\' United States Award"'
-                            : (!usState ? ' style="cursor:help; font-style:italic" title="This state does not count towards the QRZ \'USA 50\' United States Award"' : '')
+                            : (!usState ? ' style="cursor:help; font-style:italic; color: #ccf" title="This state does not count towards the QRZ \'USA 50\' United States Award"' : '')
                     ) +
                     ">" +
                     stats.usCounties[row+column]['sp'] + (usState && !dc ? '' : ' *') + "</th>";
@@ -456,7 +470,7 @@ var frm = {
             'There are <b>' + counties + '</b> confirmed ' + (counties === 1 ? 'county' : 'counties') +
             ' from <b>' + countiesTotal + '</b> available in <b>' + states + '</b> US ' + (states === 1 ? 'state' : 'states') +
             '<span class="pe-no-print"><br>' +
-            'For QRZ <b>"US-50"</b> states award, <b>PR</b> and <b>VI</b> logs are ignored and logs for <b>DC</b> count for <b>MD</b>.</span>';
+            'For QRZ <b>"US-50"</b> states award, <b>GU</b>, </b><b>PR</b> and <b>VI</b> logs are ignored and logs for <b>DC</b> count for <b>MD</b>.</span>';
         $('#usCountiesTotal').html(html);
         $('#usCountiesStatePrint').click(function() {
             PrintElements.print([document.getElementById('rptUsCounties')]);
