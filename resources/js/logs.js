@@ -470,7 +470,7 @@ var frm = {
             'There are <b>' + counties + '</b> confirmed ' + (counties === 1 ? 'county' : 'counties') +
             ' from <b>' + countiesTotal + '</b> available in <b>' + states + '</b> US ' + (states === 1 ? 'state' : 'states') +
             '<span class="pe-no-print"><br>' +
-            'For QRZ <b>"US-50"</b> states award, <b>GU</b>, </b><b>PR</b> and <b>VI</b> logs are ignored and logs for <b>DC</b> count for <b>MD</b>.</span>';
+            'For QRZ <b>"US-50"</b> states award, <b>AS</b>, <b>GU</b>, </b><b>PR</b> and <b>VI</b> logs are ignored and logs for <b>DC</b> count for <b>MD</b>.</span>';
         $('#usCountiesTotal').html(html);
         $('#usCountiesStatePrint').click(function() {
             PrintElements.print([document.getElementById('rptUsCounties')]);

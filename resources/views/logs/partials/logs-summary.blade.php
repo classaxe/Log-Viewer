@@ -16,7 +16,7 @@ Confirmed logs qualify for QRZ 'Grid Squared' Awards" style="cursor: help">
                         GSQs
                     </th>
                     <th title="US Counties
-Includes Alaska, Hawaii, Puerto Rica and US Virgin Islands" style="cursor: help">
+Includes Alaska, Amerian Samoa, Guam, Hawaii, Puerto Rica and US Virgin Islands" style="cursor: help">
                         <span>&#9432;</span>
                         Counties
                     </th>

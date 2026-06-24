@@ -42,6 +42,7 @@ class Log extends Model
         'AK' => 27,
         'AL' => 67,
         'AR' => 75,
+        'AS' => 1,
         'AZ' => 15,
         'CA' => 58,
         'CO' => 64,
@@ -447,7 +448,7 @@ class Log extends Model
                         `userId` = " . (int)$user->id . "
                         AND `county` <> ''
                         AND `l`.`itu` = `states`.`country`
-                        AND (`l`.`itu` IN('Alaska', 'Guam', 'Guam', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
+                        AND (`l`.`itu` IN('Alaska', 'American Samoa', 'Guam', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
                         AND SUBSTR(`l`.`county`, 1, 2) = `l`.`sp`
                     ) AS logged"
                 ),
@@ -460,7 +461,7 @@ class Log extends Model
                         `userId` = " . (int)$user->id . "
                         AND `county` <> ''
                         AND `l`.`itu` = `states`.`country`
-                        AND (`l`.`itu` IN('Alaska', 'Guam', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
+                        AND (`l`.`itu` IN('Alaska', 'American Samoa', 'Guam', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
                         AND SUBSTR(`l`.`county`, 1, 2) = `l`.`sp`
                         AND `conf` = 'Y'
                     ) AS confirmed
@@ -474,7 +475,7 @@ class Log extends Model
                         `userId` = " . (int)$user->id . "
                         AND `county` <> ''
                         AND `l`.`itu` = `states`.`country`
-                        AND (`l`.`itu` IN('Alaska', 'Guam', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
+                        AND (`l`.`itu` IN('Alaska', 'American Samoa', 'Guam', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
                         AND SUBSTR(`l`.`county`, 1, 2) != `l`.`sp`
                     ) AS wrongSpCount"
                 ),
@@ -489,12 +490,12 @@ class Log extends Model
                         `userId` = " . (int)$user->id . "
                         AND `county` <> ''
                         AND `l`.`itu` = `states`.`country`
-                        AND (`l`.`itu` IN('Alaska', 'Guam', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
+                        AND (`l`.`itu` IN('Alaska', 'American Samoa', 'Guam', 'Hawaii', 'Puerto Rico', 'US Virgin Islands') OR `l`.`sp` = `states`.`sp`)
                         AND SUBSTR(`l`.`county`, 1, 2) != `l`.`sp`
                     ) AS wrongSpLogs"
                 ),
             )
-            ->whereIn('country', ['USA', 'Alaska', 'Guam', 'Hawaii', 'Puerto Rico', 'US Virgin Islands'])
+            ->whereIn('country', ['USA', 'Alaska', 'American Samoa', 'Guam', 'Hawaii', 'Puerto Rico', 'US Virgin Islands'])
             ->orderBy('sp')
             ->get()
             ->toArray();
@@ -507,6 +508,9 @@ class Log extends Model
             switch ($state['country']) {
                 case 'Alaska':
                     $sp = 'AK';
+                    break;
+                case 'American Samoa':
+                    $sp = 'AS';
                     break;
                 case 'Guam':
                     $sp = 'GU';
@@ -855,6 +859,9 @@ class Log extends Model
                         break;
                     case 'Alaska':
                         $sp = 'AK';
+                        break;
+                    case 'American Samoa':
+                        $sp = 'AS';
                         break;
                     case 'Guam':
                         $sp = 'GU';
